@@ -1,7 +1,5 @@
 import aiogram
-
-
-TOKEN_API_KEY = '5754426530:AAE7vnFyukLnw8YKXwZZ_XffGYcmPBvJL1g'
+from api_key import TOKEN_API_KEY
 
 
 bot = aiogram.Bot(TOKEN_API_KEY)
