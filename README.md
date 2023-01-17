@@ -1,5 +1,3 @@
-# NFT-parsers
+# Aiogram telegram bot
 
-My parsers for some NFT markerplaces.
-
-Download and put the chromedriver in the root of the project to work.
+Bot with some function for example
