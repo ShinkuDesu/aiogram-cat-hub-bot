@@ -57,7 +57,7 @@ async def cat_cmd(message: am.types.Message):
     await message.answer_photo(
         random.choice(cf.CATS_IMGS),
         reply_markup=ikb,
-        caption=random.choice(['LOOOL', 'LMAO', 'AHAHAHAHA', 'OMG'])
+        caption=random.choice(['LOOOL', 'LMAO', 'AHAHAHAHA', 'OMG', 'XD', 'FUNNY', 'OHOHOHOHO'])
     )
 
 @dp.callback_query_handler()
