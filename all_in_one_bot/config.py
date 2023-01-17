@@ -20,7 +20,7 @@ ADVICES = [
     'I would recommend skiing for an hour every Sunday.',
     'My personal recommendation would be to improve your basic language skills before going abroad.',
     'I would always recommend that everyone use paper bags rather than plastic ones.',
-    'Youd better not eat so much spicy food or you will get heartburn.',    
+    'Youd better not eat so much spicy food or you will get heartburn.',
 ]
 
 CATS_IMGS = [

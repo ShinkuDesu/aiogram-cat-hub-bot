@@ -14,7 +14,9 @@ kb = am.types.ReplyKeyboardMarkup(
 )
 cat_btn = am.types.KeyboardButton('/cat')
 advice_btn = am.types.KeyboardButton('/advice')
-kb.add()
+kb.add(cat_btn).add(advice_btn)
+
+
 
 
 
@@ -46,8 +48,22 @@ async def advice_cmd(message: am.types.Message):
 
 @dp.message_handler(commands=['cat'])
 async def cat_cmd(message: am.types.Message):
-    await message.answer_photo(random.choice(cf.CATS_IMGS))
-    await message.delete()
+    ikb = am.types.InlineKeyboardMarkup()
+    more_ibtn = am.types.InlineKeyboardButton(
+        text='Give me more!',
+        callback_data='more cats',
+    )
+    ikb.add(more_ibtn)
+    await message.answer_photo(
+        random.choice(cf.CATS_IMGS),
+        reply_markup=ikb,
+        caption=random.choice(['LOOOL', 'LMAO', 'AHAHAHAHA', 'OMG'])
+    )
+
+@dp.callback_query_handler()
+async def more_cats(callback: am.types.CallbackQuery):
+    if callback.data == 'more cats':
+        await cat_cmd(callback.message)
 
 
 @dp.message_handler(commands=['random'])
