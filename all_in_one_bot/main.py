@@ -9,19 +9,30 @@ bot = am.Bot(TOKEN_API_KEY)
 dp = am.Dispatcher(bot)
 
 
-kb = am.types.ReplyKeyboardMarkup(
-    resize_keyboard=True,
+ikb = am.types.InlineKeyboardMarkup()
+more_ibtn = am.types.InlineKeyboardButton(
+    text='Give me more!',
+    callback_data='more cats',
 )
-cat_btn = am.types.KeyboardButton('/cat')
-advice_btn = am.types.KeyboardButton('/advice')
-kb.add(cat_btn).add(advice_btn)
-
-
-
+recat_ibtn = am.types.InlineKeyboardButton(
+    text='Reload cat',
+    callback_data='reload cat',
+)
+save_ibtn = am.types.InlineKeyboardButton(
+    text='Save cat',
+    callback_data='save cat',
+)
+ikb.add(more_ibtn).add(recat_ibtn).add(save_ibtn)
 
 
 @dp.message_handler(commands=['help', 'start'])
 async def help_cmd(message: am.types.Message):
+    kb = am.types.ReplyKeyboardMarkup(
+    resize_keyboard=True,
+    )
+    cat_btn = am.types.KeyboardButton('/cat')
+    advice_btn = am.types.KeyboardButton('/advice')
+    kb.add(cat_btn).add(advice_btn)
     await message.answer(cf.HELP_MSG, reply_markup=kb)
 
 
@@ -40,7 +51,7 @@ async def delete_cmd(message: am.types.Message):
     await message.delete()
 
 
-@dp.message_handler(commands=['adwice'])
+@dp.message_handler(commands=['advice'])
 async def advice_cmd(message: am.types.Message):
     await message.answer(random.choice(cf.ADVICES))
     await message.delete()
@@ -48,22 +59,32 @@ async def advice_cmd(message: am.types.Message):
 
 @dp.message_handler(commands=['cat'])
 async def cat_cmd(message: am.types.Message):
-    ikb = am.types.InlineKeyboardMarkup()
-    more_ibtn = am.types.InlineKeyboardButton(
-        text='Give me more!',
-        callback_data='more cats',
-    )
-    ikb.add(more_ibtn)
+    print('cat send')
+    
     await message.answer_photo(
         random.choice(cf.CATS_IMGS),
         reply_markup=ikb,
-        caption=random.choice(['LOOOL', 'LMAO', 'AHAHAHAHA', 'OMG', 'XD', 'FUNNY', 'OHOHOHOHO'])
+        caption=random.choice(cf.LMAO)
     )
 
 @dp.callback_query_handler()
 async def more_cats(callback: am.types.CallbackQuery):
     if callback.data == 'more cats':
         await cat_cmd(callback.message)
+    if callback.data == 'reload cat':
+        print('reload cat')
+        photo = am.types.InputMediaPhoto(
+            media=random.choice(cf.CATS_IMGS),
+            type='photo',
+            caption=random.choice(cf.LMAO),
+        )
+        await callback.message.edit_media(
+            media=photo,
+            reply_markup=ikb,
+        )
+    if callback.data == 'save cat':
+        print('cat saved')
+        await callback.message.delete_reply_markup()
 
 
 @dp.message_handler(commands=['random'])
