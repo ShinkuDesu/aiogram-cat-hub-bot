@@ -3,7 +3,6 @@ HELP_MSG = '''Commands:
 /reply [msg] - reply echo
 /answer [msg]- answer echo
 /delete [msg]- delete message
-/random [int] - generate random text
 /advice - get a good adwice
 /cat - get a funny cat img
 '''
