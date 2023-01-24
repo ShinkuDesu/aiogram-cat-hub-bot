@@ -8,7 +8,7 @@ def get_start_kb():
     start_kb = ReplyKeyboardMarkup(
             keyboard=[
                 [KeyboardButton(text='/cat'),
-                KeyboardButton(text='/advice')]
+                KeyboardButton(text='/upload')]
             ],
             one_time_keyboard=True,
             resize_keyboard=True,
