@@ -1,11 +1,10 @@
 HELP_MSG = '''Commands:
-/help | /start - show help message
-/reply [msg] - reply echo
-/answer [msg]- answer echo
-/delete [msg]- delete message
-/advice - get a good adwice
-/cat - get a funny cat img
+/help - помощи не будет
+/cat - получить рандомного кота
+/upload - загрузить своего кота
 '''
+
+ADMIN_CHAT_ID = '-1001882599359'
 
 LMAO = [
     'LOOOL',

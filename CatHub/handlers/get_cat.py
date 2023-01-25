@@ -10,10 +10,10 @@ from aiogram.filters import (
 from aiogram.types import (
     Message,
     CallbackQuery,
-    InputMediaPhoto,
 )
-from keyboards.cats import get_cats_ikb, CatsCallbackFactory
-from configs import config as cf
+from keyboards.get_cat import get_cats_ikb, CatsCallbackFactory
+from aiosqlite import Connection
+import pickle
 
 
 router = Router()
@@ -21,29 +21,22 @@ router = Router()
 
 @router.message(
     Command(commands=['cat']),
-    flags={"upload_photo": "upload_cat"}
 )
-async def cat_cmd(message: Message):
+async def cat_cmd(message: Message, db: Connection):
+    cat_data = random.choice(await db.execute_fetchall('SELECT * FROM cats'))
+    cat_msg = pickle.loads(cat_data[1])
     await message.answer_photo(
-        random.choice(cf.CATS_IMGS),
+        photo=cat_msg.photo[-1].file_id,
+        caption=cat_msg.caption,
         reply_markup=get_cats_ikb(),
-        caption=random.choice(cf.LMAO)
-    )
-
-@router.message(
-    Command(commands=['upload'])
-)
-async def upload_cmd(message: Message):
-    await message.answer(
-        text='Загрузите картинку котика'
     )
 
 
 @router.callback_query(
     CatsCallbackFactory.filter(F.action=='more_cats')
 )
-async def more_cats_fab(callback: CallbackQuery):
-    await cat_cmd(callback.message)
+async def more_cats_fab(callback: CallbackQuery, db: Connection):
+    await cat_cmd(callback.message, db)
     await callback.answer()
 
 
@@ -51,7 +44,6 @@ async def more_cats_fab(callback: CallbackQuery):
     CatsCallbackFactory.filter(F.action=='like')
 )
 async def like_fab(callback: CallbackQuery):
-    
     await callback.answer()
 
 
@@ -59,5 +51,4 @@ async def like_fab(callback: CallbackQuery):
     CatsCallbackFactory.filter(F.action=='like')
 )
 async def dislike_fab(callback: CallbackQuery):
-    
     await callback.answer()
